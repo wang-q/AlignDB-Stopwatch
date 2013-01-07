@@ -3,6 +3,7 @@ package AlignDB::Stopwatch;
 # ABSTRACT: Record running time and print standard messages
 
 use Moose;
+
 use Time::Duration;
 use Data::UUID;
 use Growl::GNTP;
@@ -48,7 +49,7 @@ Divider char used in output messages
 
 =cut
 
-has 'divider_char' => ( is => 'rw', isa => 'Str', default => "=" );
+has 'divider_char' => ( is => 'rw', isa => 'Str', default => sub {"="}, );
 
 =attr divider_length
 
@@ -56,7 +57,7 @@ Length of divider char
 
 =cut
 
-has 'divider_length' => ( is => 'rw', isa => 'Int', default => 30 );
+has 'divider_length' => ( is => 'rw', isa => 'Int', default => sub {30}, );
 
 =attr min_div_length
 
@@ -64,7 +65,7 @@ minimal single-side divider length
 
 =cut
 
-has 'min_div_length' => ( is => 'rw', isa => 'Int', default => 5 );
+has 'min_div_length' => ( is => 'rw', isa => 'Int', default => sub {5} );
 
 =attr uuid
 
@@ -336,9 +337,6 @@ sub operation {
     return $filename;
 }
 
-no Moose;
-__PACKAGE__->meta->make_immutable;
-
 1;
 
 __END__
@@ -357,3 +355,5 @@ __END__
     $stopwatch->start_message("Doing really bad things...");
     
     $stopwatch->end_message;
+
+=cut
