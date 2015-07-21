@@ -6,9 +6,7 @@ use Moose;
 
 use Time::Duration;
 use Data::UUID;
-use Growl::GNTP;
 use File::Spec;
-use File::ShareDir;
 use YAML qw(Dump Load DumpFile LoadFile);
 
 =attr program_name
@@ -76,37 +74,11 @@ one time on multithreads mode
 
 has uuid => ( is => 'ro', isa => 'Str' );
 
-=attr growl
-
-Growl notifier object
-
-=cut
-
-has growl => ( is => 'ro', isa => 'Object' );
-has icon  => ( is => 'ro', isa => 'Str' );
-
 sub BUILD {
     my $self = shift;
 
     $self->{start_time} = time;
     $self->{uuid}       = Data::UUID->new->create_str;
-
-    if ( $ENV{growl_send} ) {
-        my $appname = $ENV{growl_appname} || "AlignDB Stopwatch";
-        my $host    = $ENV{growl_host}    || "localhost";
-        my $password = $ENV{growl_password};
-        my $growl    = Growl::GNTP->new(
-            AppName  => $appname,
-            PeerHost => $host,
-            Password => $password,
-        );
-        $growl->register( [ { Name => "Stopwatch", } ] );
-        $self->{growl} = $growl;
-
-        my $share = File::ShareDir::dist_dir('AlignDB-Stopwatch');
-        my $icon = File::Spec->catfile( $share, 'stopwatch.jpg' );
-        $self->{icon} = $icon;
-    }
 
     return;
 }
@@ -145,6 +117,11 @@ sub print_divider {
     return $divider_str;
 }
 
+sub print_prompt {
+    my $self = shift;
+    return "==> ";
+}
+
 sub duration_now {
     my $self = shift;
     return duration( time - $self->start_time );
@@ -171,9 +148,9 @@ sub print_message {
 
 =method block_message
 
-      Usage : $self->block_message( $message, $with_duration );
-    Purpose : Print a blocked message
-    Returns : none
+Print a blocked message
+
+    $self->block_message( $message, $with_duration );
 
 =cut
 
@@ -183,24 +160,15 @@ sub block_message {
     my $with_duration = shift;
 
     my $text;
-    $text .= $self->print_empty_line;
-    $text .= $self->print_divider;
+    $text .= $self->print_prompt;
     $text .= $self->print_message($message);
-    $text .= $self->print_duration if $with_duration;
-    $text .= $self->print_divider;
+    if ($with_duration) {
+        $text .= $self->print_prompt;
+        $text .= $self->print_duration;
+    }
     $text .= $self->print_empty_line;
 
     print $text;
-
-    my $growl = $self->growl;
-    if ( $growl and $ENV{growl_other} ) {
-        $growl->notify(
-            Event   => "Stopwatch",
-            Title   => $self->operation . " -- Other",
-            Message => $text,
-            Icon    => $self->icon,
-        );
-    }
 
     return;
 }
@@ -241,9 +209,9 @@ sub print_time {
 
 =method start_message
 
-      Usage : $self->start_message( $message, $embed_in_divider );
-    Purpose : Print a starting message
-    Returns : none
+Print a starting message
+
+    $self->start_message( $message, $embed_in_divider );
 
 =cut
 
@@ -270,24 +238,14 @@ sub start_message {
 
     print $text;
 
-    my $growl = $self->growl;
-    if ( $growl and $ENV{growl_starting} ) {
-        $growl->notify(
-            Event   => "Stopwatch",
-            Title   => $self->operation . " -- Starting",
-            Message => $text,
-            Icon    => $self->icon,
-        );
-    }
-
     return;
 }
 
 =method end_message
 
-      Usage : $self->end_message( $message );
-    Purpose : Print a ending message
-    Returns : none
+Print a ending message
+
+    $self->end_message( $message );
 
 =cut
 
@@ -306,16 +264,6 @@ sub end_message {
     $text .= $self->print_divider;
 
     print $text;
-
-    my $growl = $self->growl;
-    if ( $growl and $ENV{growl_ending} ) {
-        $growl->notify(
-            Event   => "Stopwatch",
-            Title   => $self->operation . " -- Ending",
-            Message => $text,
-            Icon    => $self->icon,
-        );
-    }
 
     return;
 }
