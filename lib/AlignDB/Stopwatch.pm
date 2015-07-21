@@ -160,6 +160,7 @@ sub block_message {
     my $with_duration = shift;
 
     my $text;
+    $text .= $self->print_empty_line;
     $text .= $self->print_prompt;
     $text .= $self->print_message($message);
     if ($with_duration) {
