@@ -1,6 +1,8 @@
 Revision history for AlignDB::Stopwatch
 
 {{$NEXT}}
+
+1.0.0  2016-01-15 14:14:25 CST
     - Switch to Dist::Milla
 
 0.1    Tue Jul 21 19:27:57 2015
