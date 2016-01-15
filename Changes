@@ -1,9 +1,11 @@
-Revision history for {{$dist->name}}
+Revision history for AlignDB::Stopwatch
+
+{{$NEXT}}
+    - Switch to Dist::Milla
 
 0.1    Tue Jul 21 19:27:57 2015
-       Remove growl.
+    - Remove growl.
 
 0.01   Thu Nov 27 16:12:43 2008
-       Initial release.
-       Switch to Dist::Zilla
-
+    - Initial release.
+    - Switch to Dist::Zilla

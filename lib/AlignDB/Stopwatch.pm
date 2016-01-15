@@ -1,78 +1,20 @@
 package AlignDB::Stopwatch;
-
-# ABSTRACT: Record running time and print standard messages
-
 use Moose;
-
 use Time::Duration;
 use Data::UUID;
 use File::Spec;
 use YAML qw(Dump Load DumpFile LoadFile);
 
-=attr program_name
+our $VERSION = '1.0.0';
 
-program name
-
-=cut
-
-has program_name => ( is => 'ro', isa => 'Str' );
-
-=attr program_argv
-
-program command line options
-
-=cut
-
-has program_argv => ( is => 'ro', isa => 'ArrayRef', default => sub { [] } );
-
-=attr program_conf
-
-program configurations
-
-=cut
-
-has program_conf => ( is => 'ro', isa => 'Object' );
-
-=attr start_time
-
-start time
-
-=cut
-
-has 'start_time' => ( is => 'rw', isa => 'Value' );
-
-=attr divider_char
-
-Divider char used in output messages
-
-=cut
-
-has 'divider_char' => ( is => 'rw', isa => 'Str', default => sub {"="}, );
-
-=attr divider_length
-
-Length of divider char
-
-=cut
-
+has program_name     => ( is => 'ro', isa => 'Str' );
+has program_argv     => ( is => 'ro', isa => 'ArrayRef', default => sub { [] } );
+has program_conf     => ( is => 'ro', isa => 'Object' );
+has 'start_time'     => ( is => 'rw', isa => 'Value' );
+has 'divider_char'   => ( is => 'rw', isa => 'Str', default => sub {"="}, );
 has 'divider_length' => ( is => 'rw', isa => 'Int', default => sub {30}, );
-
-=attr min_div_length
-
-minimal single-side divider length
-
-=cut
-
 has 'min_div_length' => ( is => 'rw', isa => 'Int', default => sub {5} );
-
-=attr uuid
-
-Use Data::UUID to generate a UUID that prevent inserting meta info more than
-one time on multithreads mode
-
-=cut
-
-has uuid => ( is => 'ro', isa => 'Str' );
+has uuid             => ( is => 'ro', isa => 'Str' );
 
 sub BUILD {
     my $self = shift;
@@ -146,14 +88,6 @@ sub print_message {
     return $message . "\n";
 }
 
-=method block_message
-
-Print a blocked message
-
-    $self->block_message( $message, $with_duration );
-
-=cut
-
 sub block_message {
     my $self          = shift;
     my $message       = shift;
@@ -208,14 +142,6 @@ sub print_time {
     return $time_str;
 }
 
-=method start_message
-
-Print a starting message
-
-    $self->start_message( $message, $embed_in_divider );
-
-=cut
-
 sub start_message {
     my $self             = shift;
     my $message          = shift;
@@ -241,14 +167,6 @@ sub start_message {
 
     return;
 }
-
-=method end_message
-
-Print a ending message
-
-    $self->end_message( $message );
-
-=cut
 
 sub end_message {
     my $self    = shift;
@@ -281,14 +199,17 @@ sub init_config {
 
 sub operation {
     my $self = shift;
-    my ( undef, undef, $filename )
-        = File::Spec->splitpath( $self->program_name );
+    my ( undef, undef, $filename ) = File::Spec->splitpath( $self->program_name );
     return $filename;
 }
 
 1;
 
 __END__
+
+=head1 NAME
+
+AlignDB::Stopwatch - Record running time and print standard messages
 
 =head1 SYNOPSIS
 
@@ -302,7 +223,73 @@ __END__
     );
 
     $stopwatch->start_message("Doing really bad things...");
-    
+
     $stopwatch->end_message;
+
+=head1 ATTRIBUTES
+
+=head2 program_name
+
+program name
+
+=head2 program_argv
+
+program command line options
+
+=head2 program_conf
+
+program configurations
+
+=head2 start_time
+
+start time
+
+=head2 divider_char
+
+Divider char used in output messages
+
+=head2 divider_length
+
+Length of divider char
+
+=head2 min_div_length
+
+minimal single-side divider length
+
+=head2 uuid
+
+Use Data::UUID to generate a UUID that prevent inserting meta info more than
+one time on multithreads mode
+
+=head1 METHODS
+
+=head2 block_message
+
+Print a blocked message
+
+    $self->block_message( $message, $with_duration );
+
+=head2 start_message
+
+Print a starting message
+
+    $self->start_message( $message, $embed_in_divider );
+
+=head2 end_message
+
+Print a ending message
+
+    $self->end_message( $message );
+
+=head1 AUTHOR
+
+Qiang Wang <wang-q@outlook.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2008- by Qiang Wang.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
