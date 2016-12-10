@@ -6,7 +6,7 @@ use Data::UUID;
 use File::Spec;
 use YAML::Syck;
 
-our $VERSION = '1.0.2';
+our $VERSION = '1.1.0';
 
 has program_name     => ( is => 'ro', isa => 'Str' );
 has program_argv     => ( is => 'ro', isa => 'ArrayRef', default => sub { [] } );
