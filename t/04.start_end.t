@@ -27,8 +27,20 @@ stdout_like(
 
 $stopwatch->start_time(time);
 stdout_like(
+    sub { $stopwatch->start_message("Very loooooooooooooooooooooooog line", 1) },
+    qr{^\={5}Very[\w:. ]+\={5}\n}
+);
+
+$stopwatch->start_time(time);
+stdout_like(
     sub { $stopwatch->end_message },
     qr{\nEnd[\w:. ]+\n[\w:. ]+\n\=+\n}
 );
 
-done_testing(4);
+$stopwatch->start_time(time);
+stdout_like(
+    sub { $stopwatch->end_message("Bye") },
+    qr{Bye\nEnd[\w:. ]+\n[\w:. ]+\n\=+\n}
+);
+
+done_testing(6);
