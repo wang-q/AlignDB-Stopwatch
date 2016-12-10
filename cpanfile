@@ -2,7 +2,7 @@ requires 'Moose';
 requires 'Time::Duration';
 requires 'Data::UUID';
 requires 'File::Spec';
-requires 'YAML';
+requires 'YAML::Syck', '1.29';
 requires 'perl', '5.010001';
 
 on test => sub {

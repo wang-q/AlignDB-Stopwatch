@@ -41,7 +41,7 @@
             "File::Spec" : "0",
             "Moose" : "0",
             "Time::Duration" : "0",
-            "YAML" : "0",
+            "YAML::Syck" : "1.29",
             "perl" : "5.010001"
          }
       },
