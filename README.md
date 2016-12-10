@@ -38,17 +38,17 @@ program configurations
 
 start time
 
-## divider\_char
+## div\_char
 
-Divider char used in output messages
+Divider char used in output messages, default is \[=\]
 
-## divider\_length
+## div\_length
 
-Length of divider char
+Length of divider char, default is \[30\]
 
 ## min\_div\_length
 
-minimal single-side divider length
+minimal single-side divider length, default is \[5\]
 
 ## uuid
 
@@ -57,23 +57,37 @@ one time on multithreads mode
 
 # METHODS
 
+## record
+
+Record $main::0 to program\_name and \[@main::ARGV\] to program\_argv.
+
+Getopt::Long would manipulate @ARGV.
+
+    my $stopwatch = AlignDB::Stopwatch->new->record;
+
+## record\_conf
+
+Record a hashref or object to program\_conf.
+
+    $stopwatch->record_conf( $opt );
+
 ## block\_message
 
 Print a blocked message
 
-    $self->block_message( $message, $with_duration );
+    $stopwatch->block_message( $message, $with_duration );
 
 ## start\_message
 
 Print a starting message
 
-    $self->start_message( $message, $embed_in_divider );
+    $stopwatch->start_message( $message, $embed_in_divider );
 
 ## end\_message
 
 Print a ending message
 
-    $self->end_message( $message );
+    $stopwatch->end_message( $message );
 
 # AUTHOR
 
