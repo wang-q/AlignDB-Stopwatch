@@ -25,6 +25,26 @@ sub BUILD {
     return;
 }
 
+#@returns AlignDB::Stopwatch
+sub record {
+    my $self = shift;
+
+    $self->{program_name} = $main::0;
+
+    $self->{program_argv} = [@main::ARGV];
+
+    return $self;
+}
+
+sub record_conf {
+    my $self = shift;
+    my $conf = shift;
+
+    $self->{program_conf} = $conf;
+
+    return;
+}
+
 sub print_divider {
     my $self  = shift;
     my $title = shift;
@@ -215,12 +235,11 @@ AlignDB::Stopwatch - Record running time and print standard messages
 
     use AlignDB::Stopwatch;
 
-    # record ARGV and Config
-    my $stopwatch = AlignDB::Stopwatch->new(
-        program_name => $0,
-        program_argv => [@ARGV],
-        program_conf => $Config,
-    );
+    # record command line
+    my $stopwatch = AlignDB::Stopwatch->new->record;
+
+    # record config
+    $stopwatch->record_conf($opt);
 
     $stopwatch->start_message("Doing really bad things...");
 
