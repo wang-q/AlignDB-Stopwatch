@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/wang-q/AlignDB-Stopwatch.svg?branch=master)](https://travis-ci.org/wang-q/AlignDB-Stopwatch)
+[![codecov](https://codecov.io/gh/wang-q/AlignDB-Stopwatch/branch/master/graph/badge.svg)](https://codecov.io/gh/wang-q/AlignDB-Stopwatch)
+[![Cpan version](https://img.shields.io/cpan/v/AlignDB-Stopwatch.svg)](https://metacpan.org/release/AlignDB-Stopwatch)
+
 # NAME
 
 AlignDB::Stopwatch - Record running time and print standard messages
@@ -6,12 +10,11 @@ AlignDB::Stopwatch - Record running time and print standard messages
 
     use AlignDB::Stopwatch;
 
-    # record ARGV and Config
-    my $stopwatch = AlignDB::Stopwatch->new(
-        program_name => $0,
-        program_argv => [@ARGV],
-        program_conf => $Config,
-    );
+    # record command line
+    my $stopwatch = AlignDB::Stopwatch->new->record;
+
+    # record config
+    $stopwatch->record_conf($opt);
 
     $stopwatch->start_message("Doing really bad things...");
 
