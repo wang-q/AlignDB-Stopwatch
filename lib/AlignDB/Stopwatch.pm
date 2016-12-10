@@ -82,10 +82,12 @@ sub _divider {
 }
 
 sub _prompt {
+    my $self = shift;
     return "==> ";
 }
 
 sub _empty_line {
+    my $self = shift;
     return "\n";
 }
 
@@ -121,6 +123,8 @@ sub _duration {
 sub _message {
     my $self    = shift;
     my $message = shift;
+
+    $message = '' unless defined $message;
 
     return $message . "\n";
 }
