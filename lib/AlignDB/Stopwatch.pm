@@ -8,20 +8,20 @@ use YAML::Syck;
 
 our $VERSION = '1.1.0';
 
-has program_name     => ( is => 'ro', isa => 'Str' );
-has program_argv     => ( is => 'ro', isa => 'ArrayRef', default => sub { [] } );
-has program_conf     => ( is => 'ro', isa => 'Object' );
-has 'start_time'     => ( is => 'rw', isa => 'Value' );
-has 'div_char'       => ( is => 'rw', isa => 'Str', default => sub {"="}, );
-has 'div_length'     => ( is => 'rw', isa => 'Int', default => sub {30}, );
-has 'min_div_length' => ( is => 'rw', isa => 'Int', default => sub {5} );
-has uuid             => ( is => 'ro', isa => 'Str' );
+has program_name   => ( is => 'ro', isa => 'Str' );
+has program_argv   => ( is => 'ro', isa => 'ArrayRef', default => sub { [] } );
+has program_conf   => ( is => 'ro', isa => 'Object' );
+has start_time     => ( is => 'rw', isa => 'Value' );
+has div_char       => ( is => 'rw', isa => 'Str', default => sub {"="}, );
+has div_length     => ( is => 'rw', isa => 'Int', default => sub {30}, );
+has min_div_length => ( is => 'rw', isa => 'Int', default => sub {5} );
+has uuid           => ( is => 'ro', isa => 'Str' );
 
 sub BUILD {
     my $self = shift;
 
     $self->{start_time} = time;
-    $self->{uuid}       = Data::UUID->new->create_str;
+    $self->{uuid}       = Data::UUID->new()->create_str;
 
     return;
 }
